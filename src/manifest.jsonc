@@ -3,7 +3,7 @@
   "manifest_version": 3,
   "name": "NITech Moodle Extension (40a)",
   "homepage_url": "https://github.com/nitech-create/nitech-moodle-extension-40a",
-  "version": "0.10.0",
+  "version": "0.10.1",
 
   // Recommended
   // "action": {},
