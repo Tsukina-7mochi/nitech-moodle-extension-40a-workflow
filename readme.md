@@ -6,7 +6,8 @@
 
 ## 概要
 
-名古屋工業大学のオンライン授業サポートシステムとして採用されている Moodle (4.0) の機能を改善・拡張して使いやすくするブラウザ用拡張機能です。非公式であり、問題が起きても責任は取れません。
+名古屋工業大学のオンライン授業サポートシステムとして採用されている Moodle (4.0)
+の機能を改善・拡張して使いやすくするブラウザ用拡張機能です。非公式であり、問題が起きても責任は取れません。
 
 Web Extension for Moodle 4.0 of NITech.
 
@@ -24,7 +25,7 @@ Web Extension for Moodle 4.0 of NITech.
 
 ## ブラウザ対応状況
 
-|               ブラウザ                |         対応状況         |
+| ブラウザ                              | 対応状況                 |
 | ------------------------------------- | ------------------------ |
 | Chrome (Windows 11, 111.0.5563.147)   | 開発中                   |
 | Microsoft Edge (情報基盤センター推奨) | 開発中                   |
@@ -38,11 +39,13 @@ Web Extension for Moodle 4.0 of NITech.
 
 ### GitHub からインストール
 
-1. [Releases](https://github.com/nitech-create/nitech-moodle-extension-40a/(releases)) から .zip ファイルをダウンロードする
-    - または [ビルド方法](./how_to_build.md) に従ってビルドする
+1. [Releases](https://github.com/nitech-create/nitech-moodle-extension-40a/(releases))
+   から .zip ファイルをダウンロードする
+   - または [ビルド方法](./how_to_build.md) に従ってビルドする
 2. 拡張機能ページを開く
-    -  `chrome://extensions` をURL欄に入力する
-    - またはEdgeブラウザ右上のクッキーみたいなアイコンを押して、「拡張機能の管理」をクリック
+   - `chrome://extensions` をURL欄に入力する
+   - またはEdgeブラウザ右上のクッキーみたいなアイコンを押して、「拡張機能の管理」をクリック
 3. 開発者モードを有効にします
-4. `manifest.json` が含まれるフォルダまたはダウンロードした .zip ファイルをドロップ
-    - または「パッケージ化されていない拡張機能を読み込む」
+4. `manifest.json` が含まれるフォルダまたはダウンロードした .zip
+   ファイルをドロップ
+   - または「パッケージ化されていない拡張機能を読み込む」

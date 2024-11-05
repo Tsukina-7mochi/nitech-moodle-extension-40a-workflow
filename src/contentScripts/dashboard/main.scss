@@ -1,0 +1,38 @@
+// delete blanks under sections
+div .block_myoverview .content {
+  min-height: unset;
+}
+div .block_myoverview .paged-content-page-container {
+  min-height: unset;
+}
+
+// enlarge link element in course overview
+section.block_myoverview ul li div.row {
+  display: flex;
+  margin: 0;
+
+  > div:first-child {
+    flex-grow: 1;
+    max-width: unset;
+  }
+  > div:nth-child(2) {
+    flex-basis: unset;
+  }
+}
+
+// delete border line at the end of list
+section.block ul li:last-child {
+  border-bottom: none;
+}
+
+// fix padding and alignment of event calendar
+section.block_calendar_upcoming {
+  div.event[data-region="event-item"] {
+    align-items: center;
+    padding: 12px 0 !important;
+  }
+
+  div.footer {
+    padding-top: 8px;
+  }
+}

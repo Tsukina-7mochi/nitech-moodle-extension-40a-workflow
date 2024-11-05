@@ -1,59 +1,34 @@
-import browser from 'webextension-polyfill';
-// @deno-types=npm:@types/lodash
-import * as lodash from 'lodash';
-import type { Course } from '../course.ts';
-import { Options } from '../options.ts';
+// @deno-types="@types/webextension-polyfill"
+import browser from "webextension-polyfill";
 
-/** `storage["local" | "managed" | "sync"]` に保存されている値の型 */
-interface StoredValue {
-  courses: Course[];
-  options: Options;
-}
+import type { CourseJson } from "~/common/model/course.ts";
+import type { Preferences } from "~/common/model/preferences.ts";
 
-type StorageArea = 'local' | 'managed' | 'sync';
+type Subtract<T, U> = T extends U ? never : T;
 
-const defaultValue: StoredValue = {
-  courses: [],
-  options: {
-    features: {},
-  },
+type StorageSchema = {
+  courses: CourseJson[];
+  preferences: Preferences;
+  version: number;
+};
+type StorageKey = Subtract<keyof StorageSchema, "version">;
+
+type StorageAreaName = "local" | "sync" | "managed" | "session";
+
+const storageGet = async function <K extends StorageKey>(
+  key: K,
+  storageArea: StorageAreaName,
+): Promise<StorageSchema[K]> {
+  const data = await browser.storage[storageArea].get(key);
+  return data[key] as StorageSchema[K];
 };
 
-/** ストレージから値を取得 */
-const get = async function <Key extends keyof StoredValue>(
-  key: Key,
-  storageArea: StorageArea = 'local',
-): Promise<StoredValue[Key]> {
-  const value = await browser.storage[storageArea].get(key) as Partial<
-    StoredValue
-  >;
-
-  return lodash.defaultsDeep(value, defaultValue)[key];
+const storageSet = async function <K extends StorageKey>(
+  key: K,
+  value: StorageSchema[K],
+  storageArea: StorageAreaName,
+): Promise<void> {
+  await browser.storage[storageArea].set({ [key]: value, version: 1 });
 };
 
-/** 最後に作成された (Promise-chain の最後尾の) `Promise` */
-let lastPromise: Promise<unknown> = Promise.resolve();
-/**
- * ストレージに保存されている値を更新する;
- * 複数に同時の非同期更新が起こらないことを保証する
- */
-const update = async function <Key extends keyof StoredValue>(
-  key: Key,
-  reducer: (prev: StoredValue[Key]) => StoredValue[Key],
-  storageArea: StorageArea = 'local',
-) {
-  const storeValue = () =>
-    new Promise<void>((resolve) => {
-      get(key).then((prevValue) => {
-        browser.storage[storageArea].set({
-          [key]: reducer(lodash.defaultsDeep(prevValue, defaultValue[key])),
-        });
-        resolve();
-      });
-    });
-
-  lastPromise = lastPromise.then(storeValue);
-  await lastPromise;
-};
-
-export { get, update };
+export { storageGet as get, storageSet as set };

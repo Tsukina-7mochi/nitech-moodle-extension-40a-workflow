@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "strict": true,
-    "strictNullChecks": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
+    "noImplicitOverride": true,
     "noUnusedParameters": true,
     "lib": [
       "DOM",
@@ -16,35 +13,44 @@
     "jsxFragmentFactory": "preact.Fragment"
   },
   "lint": {
-    "files": {
-      "include": ["src/"],
-      "exclude": ["dist/"]
-    },
     "rules": {
       "tags": ["recommended"]
     }
   },
   "fmt": {
-    "files": {
-      "include": ["src/"],
-      "exclude": ["dist/"]
-    },
-    "options": {
-      "indentWidth": 2,
-      "lineWidth": 80,
-      "proseWrap": "always",
-      "singleQuote": true,
-      "useTabs": false
-    }
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "proseWrap": "always",
+    "singleQuote": false,
+    "useTabs": false
   },
   "tasks": {
-    "build": "deno run --allow-run --allow-read --allow-write --allow-env --allow-net --importmap import_map.json ./build.ts",
-    "dev": "deno run --allow-run --allow-read --allow-write --allow-env --allow-net --importmap import_map.json ./build.ts --dev",
-    "watch": "deno run --allow-run --allow-read --allow-write --allow-env --allow-net --importmap import_map.json ./build.ts --dev --watch",
-    "clean": "rm -rf dist/ && rm -rf cache/",
-    "cache-all": "bash ./scripts/cache-all.sh",
+    "build": "deno run --allow-run --allow-read --allow-write --allow-env --allow-net ./build/build.ts",
+    "dev": "DEV=1 deno task build",
+    "watch": "WATCH=1 deno task build",
+    "clean": "rm -rf ./dist",
     "check-version": "bash ./scripts/checkVersion.sh",
     "check-version-increase": "bash ./scripts/checkVersionIncrease.sh",
     "setup-vscode": "deno run --allow-run --allow-read --allow-write scripts/setup-vscode.ts"
-  }
+  },
+  "imports": {
+    "@std/fs": "jsr:@std/fs@^1.0.4",
+    "@std/jsonc": "jsr:@std/jsonc@^1.0.1",
+    "@std/path": "jsr:@std/path@^1.0.6",
+    "@std/streams": "jsr:@std/streams@^1.0.7",
+    "@types/webextension-polyfill": "npm:@types/webextension-polyfill@^0.12.1",
+    "esbuild": "npm:esbuild@0.24.0",
+    "esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@^0.11.0",
+    "esbuild-plugin-debug-switch": "jsr:@tsukina-7mochi/esbuild-plugin-debug-switch@^0.2.0",
+    "esbuild-plugin-sass": "jsr:@tsukina-7mochi/esbuild-plugin-sass@^0.1.1",
+    "preact": "npm:preact@^10.24.3",
+    "preact/compat": "npm:preact@^10.24.3/compat",
+    "react/jsx-runtime": "npm:preact@^10.24.3/jsx-runtime",
+    "react/jsx-dev-runtime": "npm:preact@^10.24.3/jsx-dev-runtime",
+    "webextension-polyfill": "npm:webextension-polyfill@^0.12.0",
+    "~/": "./src/"
+  },
+  "exclude": [
+    "dist/"
+  ]
 }

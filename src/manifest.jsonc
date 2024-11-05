@@ -1,0 +1,88 @@
+{
+  // Required
+  "manifest_version": 3,
+  "name": "NITech Moodle Extension (40a)",
+  "homepage_url": "https://github.com/nitech-create/nitech-moodle-extension-40a",
+  "version": "0.10.0",
+
+  // Recommended
+  // "action": {},
+  // "default_locale": "ja",
+  "description": "名古屋工業大学の Moodle (4.0) を使いやすくするChrome拡張機能です。情報基盤センターとは無関係で非公式なものであり、また問題が起きても責任は取れません。Web Extension for Moodle 4.0 of NITech.",
+  // "icons": {},
+
+  // Optional
+  "author": "nitech Create",
+
+  "content_scripts": [
+    // all pages
+    {
+      "matches": ["https://cms7.ict.nitech.ac.jp/moodle40a/*/*"],
+      "js": [
+        "./contentScripts/all/startMessage/index.ts",
+        "./contentScripts/all/removeForceDownload/index.ts",
+        "./contentScripts/all/replaceBreadcrumbCourseName/index.ts",
+        "./contentScripts/all/replaceNavigationCourseName/index.ts"
+      ]
+    },
+    // dashboard
+    {
+      "matches": [
+        "https://cms7.ict.nitech.ac.jp/moodle40a/my/",
+        "https://cms7.ict.nitech.ac.jp/moodle40a/my/index.php"
+      ],
+      "js": [
+        "./contentScripts/dashboard/readAndStoreCourses/index.ts",
+        "./contentScripts/dashboard/quickCourseLinks/index.ts",
+        "./contentScripts/dashboard/eventCountdown/index.ts"
+      ],
+      "css": ["./contentScripts/dashboard/main.scss"]
+    },
+    // my course config page
+    {
+      "matches": [
+        "https://cms7.ict.nitech.ac.jp/moodle40a/my/courses.php"
+      ],
+      "js": [
+        // this is **a special case** to use script in other directory
+        "./contentScripts/dashboard/readAndStoreCourses/index.ts"
+      ]
+    },
+    // scorm page
+    {
+      "matches": [
+        "https://cms7.ict.nitech.ac.jp/moodle40a/mod/scorm/*",
+        "https://cms7.ict.nitech.ac.jp/moodle40a/mod/scorm/*/*"
+      ],
+      "js": [
+        "./contentScripts/scorm/autoCollapseToc/index.ts"
+      ]
+    },
+    {
+      "matches": [
+        "https://cms7.ict.nitech.ac.jp/moodle40a/pluginfile.php/*/mod_scorm/content/*/*"
+      ],
+      "all_frames": true,
+      "css": [
+        "./contentScripts/scormContents/main.scss"
+      ]
+    }
+  ],
+
+  "options_ui": {
+    "page": "./options/index.html",
+    "open_in_tab": true,
+    "browser_style": true,
+    // this field is not exist in the manifest file definition
+    // /added for the build process
+    "js": ["./options/index.ts"],
+    "css": ["./options/index.scss"]
+  },
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+
+  "permissions": ["storage"],
+  "host_permissions": ["https://cms7.ict.nitech.ac.jp/moodle40a/*/*"]
+}
