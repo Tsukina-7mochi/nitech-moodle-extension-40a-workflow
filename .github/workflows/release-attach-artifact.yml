@@ -1,45 +1,36 @@
-name: attach build artifact to release
+name: "Release: Attach Artifact"
 
 on:
   release:
     types:
-      - published
+      - released
+      - prereleased
+
+permissions: write-all
 
 env:
-  TEMP_ASSET_NAME: asset.zip
+  FILE_NAME: nitech-moodle-extension-40a-${{ github.event.release.tag_name }}.zip
 
 jobs:
   attach-build-artifact:
     runs-on: ubuntu-latest
-    timeout-minutes: 1
+    timeout-minutes: 3
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Set environment variables
-        env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
-        run: |
-          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: v2.x
 
-      - name: Build
+      - name: build
         run: deno task build
 
-      - name: Create zip
-        run: cd ./dist; zip $TEMP_ASSET_NAME -r .
+      - name: zip artifacts
+        run: cd ./dist; zip $FILE_NAME -r .
 
-      - name: Upload release asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+      - name: upload
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/${{ env.TEMP_ASSET_NAME }}
-          asset_name: nitech-moodle-extension-40a-${{ env.TAG_NAME }}.zip
-          asset_content_type: application/zip
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} $FILE_NAME

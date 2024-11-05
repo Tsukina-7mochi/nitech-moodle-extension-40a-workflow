@@ -10,10 +10,7 @@
     ],
     "jsx": "react-jsx",
     "jsxFactory": "preact.h",
-    "jsxFragmentFactory": "preact.Fragment",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "jsxFragmentFactory": "preact.Fragment"
   },
   "lint": {
     "rules": {

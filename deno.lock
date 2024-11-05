@@ -13,7 +13,9 @@
     "jsr:@tsukina-7mochi/esbuild-plugin-sass@~0.1.1": "0.1.1",
     "npm:esbuild@0.24": "0.24.0",
     "npm:esbuild@0.24.0": "0.24.0",
-    "npm:sass@^1.80.3": "1.80.5"
+    "npm:preact@^10.24.3": "10.24.3",
+    "npm:sass@^1.80.3": "1.80.5",
+    "npm:webextension-polyfill@0.12": "0.12.0"
   },
   "jsr": {
     "@luca/esbuild-deno-loader@0.11.0": {
@@ -270,6 +272,9 @@
     "picomatch@2.3.1": {
       "integrity": "sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA=="
     },
+    "preact@10.24.3": {
+      "integrity": "sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA=="
+    },
     "readdirp@4.0.2": {
       "integrity": "sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA=="
     },
@@ -290,6 +295,9 @@
       "dependencies": [
         "is-number"
       ]
+    },
+    "webextension-polyfill@0.12.0": {
+      "integrity": "sha512-97TBmpoWJEE+3nFBQ4VocyCdLKfw54rFaJ6EVQYLBCXqCIpLSZkwGgASpv4oPt9gdKCJ80RJlcmNzNn008Ag6Q=="
     }
   },
   "workspace": {

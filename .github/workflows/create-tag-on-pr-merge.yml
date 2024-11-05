@@ -10,37 +10,22 @@ on:
       - "src/**"
 
 jobs:
+  get-version:
+    uses: ./.github/workflows/manifest-version.yml
+    with:
+      ref: ${{ github.event.pull_request.head.sha }}
+
   create-tag:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    needs: get-version
     timeout-minutes: 1
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Extract version
-        run: echo "VERSION=v$(sh scripts/get-manifest-version.sh)" >> $GITHUB_ENV
+      - name: create tag
+        run: git tag ${{ needs.get-version.outputs.version }}
 
-      - name: Get commit URL
-        env:
-          COMMITS_URL: ${{ github.event.pull_request.base.repo.commits_url }}
-          SHA: ${{ github.sha }}
-        run: echo "COMMIT_URL=$COMMITS_URL" | sed -e "s#{/sha}#/$SHA#" >> $GITHUB_ENV
-
-      - name: Get commit message
-        run: |
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "MESSAGE<<$EOF" >> $GITHUB_ENV
-          JSON_TEXT=$(curl -s -L -H "Accept: application/vnd.github+json" $COMMIT_URL)
-          VERSION_STRING=$(echo "$JSON_TEXT" | jq ".commit.message" | sed -E 's/^"//' | sed -E 's/"$//')
-          echo -e "$VERSION_STRING" >> $GITHUB_ENV
-          echo "$EOF" >> $GITHUB_ENV
-
-      - name: Add tag ${{ env.VERSION }}
-        uses: rickstaa/action-create-tag@v1
-        id: create-tag
-        with:
-          tag: ${{ env.VERSION }}
-          tag_exists_error: true
-          commit_sha: ${{ github.sha }}
-          message: ${{ env.MESSAGE }}
+      - name: push tag
+        run: git push origin ${{ needs.get-version.outputs.version }}

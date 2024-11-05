@@ -20,7 +20,7 @@ main {
 }
 
 #preferences {
-  .preference-group+.preference-group {
+  .preference-group + .preference-group {
     margin-top: 1em;
   }
 
@@ -38,7 +38,7 @@ main {
     li {
       list-style: none;
 
-      &+li {
+      & + li {
         border-top: 1px solid #d0d0d0;
       }
 

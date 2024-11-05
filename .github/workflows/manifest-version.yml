@@ -1,0 +1,39 @@
+name: Manifest Version
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+    outputs:
+      version:
+        value: ${{ jobs.get-version.outputs.version }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+
+    steps:
+      - run: 'echo "ref: ${{ inputs.ref }}"'
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: get version
+        id: get-version
+        run: |
+          VERSION=$(NOCOLOR="true" git show "${{ inputs.ref }}:./src/manifest.jsonc" | deno run scripts/getManifestVersion.ts)
+          echo "Version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
